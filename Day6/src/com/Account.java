@@ -1,15 +1,15 @@
 package com;
 
 public class Account {
-	private double balance=500;
+	private Double balance=500.0;
 	static Account acc;
 	private Account() {
 		
 	}
-	public void deposit(double amt) {
+	public void deposit(Double amt) {
 		balance+=amt;
 	}
-	public double getBalance() {
+	public Double getBalance() {
 		return balance;
 	}
 	
