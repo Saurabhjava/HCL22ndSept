@@ -1,0 +1,705 @@
+Section A – Basic Level
+Q1. Which package contains the Stream API?
+A. java.lang.stream
+B. java.util.stream
+C. java.stream
+D. java.io.stream
+Correct Answer: B
+Explanation: Stream API classes and interfaces are available in java.util.stream.
+
+Q2. Which method is used to convert a Collection into a stream?
+A. toStream()
+B. asStream()
+C. stream()
+D. getStream()
+Correct Answer: C
+Explanation: Collection.stream() returns a sequential stream.
+
+Q3. Which of the following is a terminal operation?
+A. map()
+B. filter()
+C. sorted()
+D. collect()
+Correct Answer: D
+Explanation: Terminal operations trigger stream processing and produce a result.
+
+Q4. Streams in Java are:
+A. Reusable
+B. Mutable
+C. Lazy
+D. Synchronized
+Correct Answer: C
+Explanation: Stream operations are evaluated lazily until a terminal operation is invoked.
+
+Q5. What is the return type of filter()?
+A. List<T>
+B. Set<T>
+C. Stream<T>
+D. Optional<T>
+Correct Answer: C
+
+Section B – Intermediate Level
+Q6. What will be the output?
+List<Integer> list = Arrays.asList(1, 2, 3, 4);
+list.stream().filter(n -> n % 2 == 0).count();
+
+A. 1
+B. 2
+C. 3
+D. Compilation error
+Correct Answer: B
+Explanation: Even numbers are 2 and 4.
+
+Q7. Which method is used to transform one object into another in a stream?
+A. filter()
+B. map()
+C. reduce()
+D. collect()
+Correct Answer: B
+
+Q8. Which of the following statements is true?
+A. Streams store data
+B. Streams modify the source
+C. Streams can be traversed multiple times
+D. Streams support functional-style operations
+Correct Answer: D
+
+Q9. What does the following code return?
+Stream.of(1, 2, 3)
+      .reduce(0, Integer::sum);
+
+A. Optional<Integer>
+B. 6
+C. 0
+D. Compilation error
+Correct Answer: B
+Explanation: Identity value 0 + sum of elements.
+
+Q10. Which interface is used internally by map()?
+A. Predicate
+B. Consumer
+C. Supplier
+D. Function
+Correct Answer: D
+
+Q11. What is the output?
+List<String> list = Arrays.asList("a", "bb", "ccc");
+list.stream().map(String::length).forEach(System.out::print);
+
+A. 1 2 3
+B. 123
+C. [1,2,3]
+D. Compilation error
+Correct Answer: B
+
+Q12. Which collector is used to group elements?
+A. Collectors.mapping()
+B. Collectors.joining()
+C. Collectors.groupingBy()
+D. Collectors.partitioningBy()
+Correct Answer: C
+
+Q13. Difference between findFirst() and findAny()?
+A. No difference
+B. findAny() is deterministic
+C. findFirst() is deterministic
+D. Both are non-deterministic
+Correct Answer: C
+Explanation: findFirst() preserves encounter order, especially relevant in parallel streams.
+
+Q14. What will happen if a stream is reused?
+A. Works fine
+B. Returns empty result
+C. Throws IllegalStateException
+D. Compilation error
+Correct Answer: C
+
+Q15. Which method converts a stream into a List (Java 16+)?
+A. collect(Collectors.toList())
+B. toArray()
+C. toList()
+D. asList()
+Correct Answer: C
+
+================================================================================================
+
+Q1. Output of the following code?
+List<Integer> list = List.of(10, 20, 30);
+list.stream()
+    .map(n -> n / 10)
+    .forEach(System.out::print);
+
+
+A. 102030
+B. 123
+C. 1 2 3
+D. Compilation error
+
+Correct Answer: B
+Explanation: Integer division → 10/10=1, 20/10=2, 30/10=3.
+
+Q2. What will be printed?
+List<String> names = List.of("Java", "Stream", "API");
+long count = names.stream()
+                  .filter(s -> s.length() > 3)
+                  .count();
+System.out.println(count);
+
+
+A. 1
+B. 2
+C. 3
+D. 0
+
+Correct Answer: B
+Explanation: "Java" and "Stream" have length > 3.
+
+Q3. Identify the output
+Stream.of("a", "bb", "ccc")
+      .map(String::length)
+      .reduce((a, b) -> a + b)
+      .ifPresent(System.out::print);
+
+
+A. 6
+B. 123
+C. Optional[6]
+D. Compilation error
+
+Correct Answer: A
+
+Q4. What happens when this code is executed?
+Stream<Integer> stream = Stream.of(1, 2, 3);
+stream.forEach(System.out::print);
+stream.forEach(System.out::print);
+
+
+A. 123123
+B. 123
+C. No output
+D. IllegalStateException
+
+Correct Answer: D
+Explanation: Streams cannot be reused after a terminal operation.
+
+Q5. Output of the code
+List<Integer> list = List.of(1, 2, 3, 4, 5);
+int result = list.stream()
+                 .filter(n -> n % 2 == 0)
+                 .map(n -> n * n)
+                 .findFirst()
+                 .orElse(0);
+System.out.println(result);
+
+
+A. 4
+B. 16
+C. 2
+D. 0
+
+Correct Answer: B
+Explanation: First even number = 2, square = 4 ❌
+Actually stream order → 2, square → 4 ❌
+But filter → map → findFirst gives 2² = 4.
+Wait – list is [1,2,3,4,5], filter even → [2,4], map square → [4,16], findFirst → 4.
+
+✔ Correct Answer should be A (4)
+
+Q6. Output?
+List<String> list = List.of("one", "two", "three");
+list.stream()
+    .sorted()
+    .forEach(System.out::print);
+
+
+A. onetwothree
+B. threeonetwo
+C. onetwothree (alphabetical)
+D. Compilation error
+
+Correct Answer: C
+Explanation: Natural sorting → one, three, two.
+
+Q7. What does this code print?
+List<Integer> nums = List.of(1, 2, 3);
+int sum = nums.stream()
+              .mapToInt(Integer::intValue)
+              .sum();
+System.out.println(sum);
+
+
+A. 3
+B. 6
+C. Optional[6]
+D. Compilation error
+
+Correct Answer: B
+
+Q8. Identify the output
+List<String> list = List.of("a", "b", "c");
+String result = list.stream()
+                    .collect(Collectors.joining(","));
+System.out.println(result);
+
+
+A. abc
+B. a,b,c
+C. [a,b,c]
+D. Compilation error
+
+Correct Answer: B
+
+Q9. What will be printed?
+List<Integer> list = List.of(1, 2, 3, 4);
+list.stream()
+    .limit(2)
+    .skip(1)
+    .forEach(System.out::print);
+
+
+A. 1
+B. 2
+C. 12
+D. 23
+
+Correct Answer: B
+Explanation: limit(2) → [1,2], skip(1) → [2].
+
+Q10. Output of the code
+List<Integer> list = List.of(5, 10, 15);
+boolean result = list.stream()
+                     .allMatch(n -> n % 5 == 0);
+System.out.println(result);
+
+
+A. true
+B. false
+C. Compilation error
+D. Runtime exception
+
+Correct Answer: A
+
+Q11. What will be the output?
+List<Integer> list = List.of(1, 2, 3, 4);
+list.parallelStream()
+    .forEach(System.out::print);
+
+
+A. Always 1234
+B. Always 4321
+C. Order is not guaranteed
+D. Compilation error
+
+Correct Answer: C
+
+Q12. Identify the output
+List<String> list = List.of("java", "stream");
+list.stream()
+    .map(String::toUpperCase)
+    .peek(System.out::print)
+    .count();
+
+
+A. JAVASTREAM
+B. No output
+C. Compilation error
+D. 2
+
+Correct Answer: A
+Explanation: peek() executes because a terminal operation (count()) is present.
+
+=============================================================================================
+Q1. Output of the following code?
+List<Integer> list = List.of(1, 2, 3, 4);
+
+list.parallelStream()
+    .forEach(System.out::print);
+
+
+A. Always 1234
+B. Always 4321
+C. Output order is unpredictable
+D. Compilation error
+
+Correct Answer: C
+Explanation: forEach() with parallelStream() does not preserve encounter order.
+
+Q2. What is guaranteed if forEachOrdered() is used instead?
+list.parallelStream()
+    .forEachOrdered(System.out::print);
+
+
+A. Better performance
+B. Same order as source
+C. Random order
+D. Compilation error
+
+Correct Answer: B
+
+Q3. Identify the output
+List<String> list = List.of("apple", "ant", "ball", "bat");
+
+Map<Character, List<String>> map =
+        list.stream()
+            .collect(Collectors.groupingBy(s -> s.charAt(0)));
+
+System.out.println(map.get('a'));
+
+
+A. [apple]
+B. [ant]
+C. [apple, ant]
+D. Order is undefined
+
+Correct Answer: C
+Explanation: Both strings start with 'a'; encounter order is preserved.
+
+Q4. What does this code return?
+Map<Integer, Long> map =
+    Stream.of("a", "bb", "ccc", "dd")
+          .collect(Collectors.groupingBy(
+              String::length,
+              Collectors.counting()
+          ));
+
+System.out.println(map);
+
+
+A. {1=[a], 2=[bb, dd], 3=[ccc]}
+B. {1=1, 2=2, 3=1}
+C. {1=Optional[1], 2=Optional[2], 3=Optional[1]}
+D. Compilation error
+
+Correct Answer: B
+
+Q5. Output of the following code?
+List<List<Integer>> list =
+        List.of(List.of(1, 2), List.of(3, 4));
+
+list.stream()
+    .flatMap(l -> l.stream())
+    .forEach(System.out::print);
+
+
+A. [1, 2, 3, 4]
+B. 1234
+C. [[1,2],[3,4]]
+D. Compilation error
+
+Correct Answer: B
+
+Q6. Difference between map() and flatMap() based on output
+List<List<Integer>> list =
+        List.of(List.of(1, 2), List.of(3));
+
+list.stream()
+    .map(l -> l.stream())
+    .forEach(System.out::print);
+
+
+A. 123
+B. 12 3
+C. Stream references are printed
+D. Compilation error
+
+Correct Answer: C
+Explanation: map() produces Stream<Stream<Integer>>.
+
+Q7. What will be printed?
+List<String> list = List.of("a", "bb", "ccc");
+
+int sum = list.parallelStream()
+              .mapToInt(String::length)
+              .sum();
+
+System.out.println(sum);
+
+
+A. 3
+B. 6
+C. Optional[6]
+D. Non-deterministic
+
+Correct Answer: B
+Explanation: Reduction operations like sum() are deterministic.
+
+Q8. Identify the issue (if any)
+List<Integer> list = new ArrayList<>();
+
+IntStream.range(1, 1000)
+         .parallel()
+         .forEach(list::add);
+
+System.out.println(list.size());
+
+
+A. Always prints 999
+B. Always prints 1000
+C. Non-deterministic result
+D. Compilation error
+
+Correct Answer: C
+Explanation: ArrayList is not thread-safe.
+
+Q9. Correct output?
+List<String> list = List.of("java", "stream", "api");
+
+Map<Integer, Set<String>> map =
+    list.stream()
+        .collect(Collectors.groupingBy(
+            String::length,
+            Collectors.toSet()
+        ));
+
+System.out.println(map.get(4));
+
+
+A. [java]
+B. [java, api]
+C. [stream]
+D. null
+
+Correct Answer: A
+
+Q10. Output of this reduction
+int result = Stream.of(1, 2, 3, 4)
+                   .parallel()
+                   .reduce(0, (a, b) -> a - b);
+
+System.out.println(result);
+
+
+A. -10
+B. 0
+C. Non-deterministic
+D. Compilation error
+
+Correct Answer: C
+Explanation: Subtraction is not associative, unsafe for parallel reduction.
+
+Q11. What does this code produce?
+List<String> list = List.of("a,b", "c,d");
+
+List<String> result =
+    list.stream()
+        .flatMap(s -> Arrays.stream(s.split(",")))
+        .collect(Collectors.toList());
+
+System.out.println(result);
+
+
+A. [a, b, c, d]
+B. [a,b, c,d]
+C. abcd
+D. Compilation error
+
+Correct Answer: A
+
+Q12. Identify the output
+Map<Boolean, List<Integer>> map =
+    IntStream.rangeClosed(1, 5)
+             .boxed()
+             .collect(Collectors.partitioningBy(
+                 n -> n % 2 == 0
+             ));
+
+System.out.println(map.get(true));
+
+
+A. [1, 3, 5]
+B. [2, 4]
+C. [false]
+D. Compilation error
+
+Correct Answer: B
+================================================================================================
+Q1. What is the main issue in the following code?
+List<Integer> list = new ArrayList<>();
+
+IntStream.range(1, 100)
+         .parallel()
+         .forEach(list::add);
+
+
+A. Compilation error
+B. Logical error – missing terminal operation
+C. Race condition due to non-thread-safe collection
+D. Deadlock
+
+Correct Answer: C
+Explanation: ArrayList is not thread-safe; parallel mutation causes data corruption.
+
+Q2. What is wrong with this code?
+Stream<Integer> stream = Stream.of(1, 2, 3);
+stream.forEach(System.out::print);
+stream.map(n -> n * 2).forEach(System.out::print);
+
+
+A. Nothing, output is 123246
+B. map() is not allowed after forEach()
+C. Stream reuse causes IllegalStateException
+D. map() must be terminal
+
+Correct Answer: C
+
+Q3. Identify the subtle bug
+int result = Stream.of(1, 2, 3, 4)
+                   .parallel()
+                   .reduce(0, (a, b) -> a - b);
+
+
+A. Wrong identity value
+B. Non-associative accumulator
+C. Autoboxing issue
+D. Compilation error
+
+Correct Answer: B
+Explanation: Subtraction is not associative; parallel reduction yields non-deterministic results.
+
+Q4. What is the problem here?
+List<String> list = List.of("a", "bb", "ccc");
+
+list.stream()
+    .filter(s -> {
+        System.out.println(s);
+        return s.length() > 1;
+    });
+
+
+A. Filter condition is incorrect
+B. println inside lambda is not allowed
+C. No terminal operation → stream never executes
+D. Performance issue only
+
+Correct Answer: C
+
+Q5. Identify the issue
+Optional<String> result =
+    Stream.of("a", "bb")
+          .filter(s -> s.length() > 5)
+          .findFirst();
+
+System.out.println(result.get());
+
+
+A. Compilation error
+B. Always prints null
+C. NoSuchElementException at runtime
+D. Optional cannot be printed
+
+Correct Answer: C
+
+Q6. What is the bug in this code?
+List<Integer> list = List.of(1, 2, 3);
+
+list.stream()
+    .map(n -> {
+        if (n == 2) return null;
+        return n;
+    })
+    .forEach(System.out::println);
+
+
+A. Compilation error
+B. NullPointerException during stream creation
+C. NullPointerException during terminal operation
+D. Output skips 2 safely
+
+Correct Answer: C
+Explanation: Streams allow null, but terminal ops may throw NPE.
+
+Q7. Identify the issue
+list.parallelStream()
+    .forEach(n -> {
+        if (n == 5) return;
+        System.out.print(n);
+    });
+
+
+A. Compilation error
+B. return exits the stream pipeline
+C. return exits only the lambda
+D. Dead code
+
+Correct Answer: C
+Explanation: return exits the lambda, not the stream.
+
+Q8. What is wrong here?
+Map<Integer, List<String>> map =
+    list.parallelStream()
+        .collect(Collectors.groupingBy(String::length));
+
+
+A. Compilation error
+B. Thread-safety issue in collector
+C. Results are unordered but correct
+D. groupingBy cannot be used in parallel
+
+Correct Answer: C
+Explanation: groupingBy is safe; order is not guaranteed.
+
+Q9. Identify the subtle bug
+int sum = Stream.of(1, 2, 3)
+                .parallel()
+                .reduce(0, Integer::sum);
+
+System.out.println(sum);
+
+
+A. Incorrect identity
+B. Race condition
+C. No bug – code is correct
+D. Autoboxing issue
+
+Correct Answer: C
+Explanation: sum is associative and safe for parallel reduction.
+
+Q10. What is the problem with this logic?
+List<Integer> list = List.of(1, 2, 3);
+
+list.stream()
+    .peek(n -> {
+        if (n == 2) throw new RuntimeException();
+    })
+    .forEach(System.out::println);
+
+
+A. peek() should not be used for logic
+B. peek() suppresses exceptions
+C. Exception will never occur
+D. Compilation error
+
+Correct Answer: A
+Explanation: peek() is for debugging; using it for business logic is a design bug.
+
+Q11. Identify the issue
+Stream<String> stream = list.stream();
+stream.filter(s -> s.length() > 2);
+stream.forEach(System.out::println);
+
+
+A. filter is incorrect
+B. filter is ignored due to immutability
+C. Stream pipeline is broken
+D. Compilation error
+
+Correct Answer: B
+Explanation: Streams are immutable; filter() result is not assigned.
+
+Q12. What is the subtle problem?
+List<Integer> list = List.of(1, 2, 3);
+
+list.stream()
+    .limit(1)
+    .skip(1)
+    .forEach(System.out::print);
+
+
+A. Compilation error
+B. Prints 1
+C. Prints nothing
+D. Infinite loop
+
+Correct Answer: C
+Explanation: limit(1) → [1], skip(1) → empty stream.
+======================================================================================
